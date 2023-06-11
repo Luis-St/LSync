@@ -1,0 +1,54 @@
+plugins {
+	id "java-library"
+	id "java"
+	id "org.openjfx.javafxplugin" version "0.0.10"
+}
+
+repositories {
+	mavenCentral()
+	maven {
+		url "https://libraries.minecraft.net"
+	}
+	maven {
+		url uri("${projectDir}/maven/repositories")
+	}
+}
+
+javafx {
+	version = "17.0.6"
+	modules = [ "javafx.controls" ]
+}
+
+dependencies {
+	// Google
+	implementation "com.google.guava:guava:31.0.1-jre" // Utility
+	implementation "com.google.code.gson:gson:2.8.9" // Json
+	// Apache
+	implementation "org.apache.logging.log4j:log4j-api:2.14.1" // Logging
+	implementation 'org.apache.logging.log4j:log4j-core:2.17.1' // Logging
+	implementation "org.apache.commons:commons-lang3:3.0" // Utility
+	implementation "org.apache.commons:commons-email:1.5" // E-Mail
+	implementation "commons-codec:commons-codec:1.15" // Cryptic
+	// Other
+	implementation "net.sf.jopt-simple:jopt-simple:5.0.4" // Startup
+	implementation "com.mojang:datafixerupper:4.0.26" // Codec/Json helper
+	implementation "org.jetbrains:annotations:23.0.0" // Annotations
+}
+
+tasks.register("run", JavaExec) {
+	group = "runs"
+	getMainClass().set("net.luis.lsync.Main")
+	classpath = sourceSets.main.runtimeClasspath
+	enableAssertions = true
+	args()
+	args()
+	jvmArgs("--module-path", classpath.asPath, "--add-modules", "javafx.controls")
+}
+
+tasks.withType(JavaCompile).configureEach {
+	options.encoding = "UTF-8"
+}
+
+jar {
+	duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+}

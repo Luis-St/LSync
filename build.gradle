@@ -25,9 +25,9 @@ javafx {
  */
 dependencies {
 	// Local
-	implementation "org.controlsfx:ControlsFX:1.1.1" // Fx
-	implementation "net.luis:LUtils:4.4.2" // Utility
 //	implementation "net.luis:FxUtils:2.2" // Fx Utility
+	implementation "org.controlsfx:ControlsFx:1.1.1" // Fx
+	implementation "net.luis:LUtils:4.4.3" // Utility
 	// Google
 	implementation "com.google.guava:guava:31.0.1-jre" // Utility
 	implementation "com.google.code.gson:gson:2.8.9" // Json

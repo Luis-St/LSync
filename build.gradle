@@ -1,5 +1,4 @@
 plugins {
-	id "java-library"
 	id "java"
 	id "org.openjfx.javafxplugin" version "0.0.10"
 }
@@ -42,6 +41,13 @@ dependencies {
 	implementation "net.sf.jopt-simple:jopt-simple:5.0.4" // Startup
 	implementation "com.mojang:datafixerupper:4.0.26" // Codec/Json helper
 	implementation "org.jetbrains:annotations:23.0.0" // Annotations
+	// Test
+	testImplementation "org.junit.jupiter:junit-jupiter-api:5.8.1"
+	testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.8.1"
+}
+
+test {
+	useJUnitPlatform()
 }
 
 tasks.register("run", JavaExec) {

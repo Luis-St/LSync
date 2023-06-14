@@ -14,33 +14,29 @@ repositories {
 }
 
 javafx {
-	version = "17.0.6"
+	version = "${JavaFx}"
 	modules = [ "javafx.controls" ]
 }
 
-/*
- * TODO:
- *  - update dependency versions to latest (in this project)
- *  - move version into gradle.properties
- */
 dependencies {
 	// Local
-	implementation "org.controlsfx:ControlsFx:1.1.1" // Fx
-	implementation "net.luis:LUtils:4.4.3" // Utility
-	implementation "net.luis:FxUtils:1.8.2" // Fx Utility
+	implementation "org.controlsfx:ControlsFx:${ControlsFx}" // Fx
+	implementation "net.luis:LUtils:${LUtils}" // Utility
+	implementation "net.luis:FxUtils:${FxUtils}" // Fx Utility
 	// Google
-	implementation "com.google.guava:guava:31.0.1-jre" // Utility
-	implementation "com.google.code.gson:gson:2.8.9" // Json
+	implementation "com.google.guava:guava:${GoogleGuava}" // Utility
+	implementation "com.google.code.gson:gson:${GoogleGson}" // Json
 	// Apache
-	implementation "org.apache.logging.log4j:log4j-api:2.14.1" // Logging
-	implementation 'org.apache.logging.log4j:log4j-core:2.17.1' // Logging
-	implementation "org.apache.commons:commons-lang3:3.0" // Utility
-	implementation "org.apache.commons:commons-email:1.5" // E-Mail
-	implementation "commons-codec:commons-codec:1.15" // Cryptic
+	implementation "org.apache.logging.log4j:log4j-api:${Log4jAPI}" // Logging
+	implementation "org.apache.logging.log4j:log4j-core:${Log4jCore}" // Logging
+	implementation "org.apache.commons:commons-lang3:${ApacheLang}" // Utility
+	implementation "org.apache.commons:commons-email:${ApacheEmail}" // E-Mail
+	implementation "commons-codec:commons-codec:${ApacheCodec}" // Cryptic
+	implementation "commons-io:commons-io:${ApacheIO}" // IO
 	// Other
-	implementation "net.sf.jopt-simple:jopt-simple:5.0.4" // Startup
-	implementation "com.mojang:datafixerupper:4.0.26" // Codec/Json helper
-	implementation "org.jetbrains:annotations:23.0.0" // Annotations
+	implementation "net.sf.jopt-simple:jopt-simple:${JoptSimple}" // Startup
+	implementation "com.mojang:datafixerupper:${MojangCodec}" // Codec/Json helper
+	implementation "org.jetbrains:annotations:${JetBrainsAnnotations}" // Annotations
 	// Test
 	testImplementation "org.junit.jupiter:junit-jupiter-api:5.8.1"
 	testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.8.1"
@@ -55,7 +51,6 @@ tasks.register("run", JavaExec) {
 	getMainClass().set("net.luis.lsync.Main")
 	classpath = sourceSets.main.runtimeClasspath
 	enableAssertions = true
-	args()
 	args()
 	jvmArgs("--module-path", classpath.asPath, "--add-modules", "javafx.controls")
 }

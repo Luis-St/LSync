@@ -1,6 +1,7 @@
 package net.luis.lsync.ui;
 
 import javafx.scene.text.Font;
+import net.luis.utils.annotation.AutoInitialize;
 
 /**
  *
@@ -8,6 +9,7 @@ import javafx.scene.text.Font;
  *
  */
 
+@AutoInitialize
 public class Fonts {
 	
 	public static final Font FA_BRANDS = Font.loadFont(Fonts.class.getResourceAsStream("/font/font_awesome_brands.otf"), 12);

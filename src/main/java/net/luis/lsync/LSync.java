@@ -2,14 +2,16 @@ package net.luis.lsync;
 
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
-import javafx.scene.text.Font;
 import javafx.stage.*;
+import net.luis.lsync.ui.TrayItem;
+import net.luis.lsync.ui.UiUtils;
+import net.luis.lsync.utils.Utils;
+import org.jetbrains.annotations.NotNull;
+
+import javax.swing.*;
 
 /**
  *
@@ -19,21 +21,12 @@ import javafx.stage.*;
 
 public class LSync extends Application {
 	
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-/*		primaryStage.initStyle(StageStyle.UTILITY);
-		primaryStage.setOpacity(0);
-		primaryStage.setHeight(0);
-		primaryStage.setWidth(0);
-		primaryStage.show();
-		Stage mainStage = new Stage();
-		mainStage.initOwner(primaryStage);
-		mainStage.initStyle(StageStyle.UNDECORATED);*/
+	/*		// Awesome Font test
 		Button btn = new Button();
 		Font font = Font.loadFont(Main.class.getResourceAsStream("/font/font_awesome_regular.otf"), 12);
 		font = Font.loadFont(Main.class.getResourceAsStream("/font/font_awesome_solid.otf"), 12);
-/*		System.out.println(font.getFamily());
-		btn.setFont(font);*/
+		System.out.println(font.getFamily());
+		btn.setFont(font);
 		
 		
 		
@@ -49,43 +42,46 @@ public class LSync extends Application {
 		StackPane root = new StackPane();
 		root.getChildren().add(btn);
 		primaryStage.setScene(new Scene(root, 300, 250));
-		primaryStage.show();
-/*		stage.initStyle(StageStyle.UTILITY);
-		stage.initStyle(StageStyle.UNDECORATED);
+		primaryStage.show();*/
+	
+	private final TrayItem tray = new TrayItem("LSync", new ImageIcon(Utils.getResource("/icon.png")).getImage());
+	
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		this.disablePrimaryStage(primaryStage);
+		Stage stage = this.setupMainStage(primaryStage);
+		this.tray.addMouseListener((e) -> Platform.runLater(() -> {
+			stage.setIconified(false);
+			stage.requestFocus();
+		}));
+		UiUtils.addTray(this.tray);
 		Scene scene = new Scene(new StackPane(), 400, 550);
-
-		
 		stage.setScene(scene);
-		
 		stage.show();
+		this.positionStage(stage);
+	}
+	
+	private void disablePrimaryStage(@NotNull Stage stage) {
+		stage.initStyle(StageStyle.UTILITY);
+		stage.setOpacity(0);
+		stage.setHeight(0);
+		stage.setWidth(0);
+		stage.show();
+	}
+	
+	private @NotNull Stage setupMainStage(Stage primaryStage) {
+		Stage stage = new Stage();
+		stage.initOwner(primaryStage);
+		stage.initStyle(StageStyle.UNDECORATED);
 		stage.focusedProperty().addListener((observable, oldValue, newValue) -> {
 			if (!newValue) {
-				SystemTray tray = SystemTray.getSystemTray();
-				TrayIcon trayIcon = new TrayIcon(new ImageIcon(getClass().getResource("/icon.png")).getImage(), "LSync");
-				trayIcon.setImageAutoSize(true);
-				trayIcon.addActionListener(e -> Platform.runLater(() -> {
-					stage.setIconified(false);
-					stage.requestFocus();
-					tray.remove(trayIcon);
-				}));
-				try {
-					tray.add(trayIcon);
-				} catch (AWTException e) {
-					throw new RuntimeException(e);
-				}
 				stage.setIconified(true);
 			}
 		});
-		
-		
-		
-		this.positionStage(stage);*/
-
-
-		
+		return stage;
 	}
 	
-	private void positionStage(Stage stage) {
+	private void positionStage(@NotNull Stage stage) {
 		Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
 		double stageWidth = stage.getWidth();
 		double stageHeight = stage.getHeight();

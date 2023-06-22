@@ -32,7 +32,7 @@ public class TrayItem extends TrayIcon {
 	public void addMouseListener(Consumer<MouseEvent> listener) {
 		this.addMouseListener(new MouseInputAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mousePressed(MouseEvent e) {
 				listener.accept(e);
 			}
 		});

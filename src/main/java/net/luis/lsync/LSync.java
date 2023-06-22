@@ -9,7 +9,9 @@ import javafx.stage.*;
 import net.luis.fxutils.PropertyListeners;
 import net.luis.lsync.ui.TrayItem;
 import net.luis.lsync.ui.UiUtils;
+import net.luis.lsync.utils.TimeStorage;
 import net.luis.lsync.utils.Utils;
+import net.luis.utils.util.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -50,27 +52,28 @@ public class LSync extends Application {
 		primaryStage.show();*/
 	
 	private final TrayItem tray = new TrayItem("LSync", new ImageIcon(Utils.getResource("/icon.png")).getImage());
+	private final TimeStorage<Boolean> focusStorage = new TimeStorage<>(50);
+	
+	@Override
+	public void init() {
+		Thread.currentThread().setName("Ui Thread");
+	}
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		Thread.currentThread().setName("Ui Thread");
 		this.disablePrimaryStage(primaryStage);
 		Stage stage = this.setupMainStage(primaryStage);
-		// Issue with focus listener of stage which hides the stage when the stage loses focus
-		// May try to check click location in focus listener
 		this.tray.addMouseListener((e) -> {
-			LOGGER.info("Mouse pressed");
 			Platform.runLater(() -> {
 				if (stage.isShowing()) {
 					stage.hide();
-				} else {
+				} else if (this.focusStorage.get(true)) {
 					stage.show();
 					stage.requestFocus();
 					this.positionStage(stage);
 				}
 			});
-		});
-		stage.showingProperty().addListener((observable, oldValue, newValue) -> {
-			LOGGER.info("From {} to {}", oldValue, newValue);
 		});
 		UiUtils.addTray(this.tray);
 		Scene scene = new Scene(new StackPane(), 400, 550);
@@ -91,7 +94,10 @@ public class LSync extends Application {
 		Stage stage = new Stage();
 		stage.initOwner(primaryStage);
 		stage.initStyle(StageStyle.UNDECORATED);
-		stage.focusedProperty().addListener(PropertyListeners.createWithNew(value -> !value, stage::hide));
+		stage.focusedProperty().addListener(PropertyListeners.createWithNew(value -> !value, () -> {
+			stage.hide();
+			this.focusStorage.set(false);
+		}));
 		return stage;
 	}
 	

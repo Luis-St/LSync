@@ -17,7 +17,7 @@ public class Main {
 	private static final Logger LOGGER = LogManager.getLogger(Main.class);
 	
 	public static void main(String[] args) {
-		new Thread(() -> Application.launch(LSync.class, args)).start();
+		Application.launch(LSync.class, args);
 	}
 	
 	static {

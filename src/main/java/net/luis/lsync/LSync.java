@@ -52,7 +52,7 @@ public class LSync extends Application {
 		primaryStage.show();*/
 	
 	private final TrayItem tray = new TrayItem("LSync", new ImageIcon(Utils.getResource("/icon.png")).getImage());
-	private final TimeStorage<Boolean> focusStorage = new TimeStorage<>(50);
+	private final TimeStorage<Boolean> focusStorage = new TimeStorage<>(25);
 	
 	@Override
 	public void init() {

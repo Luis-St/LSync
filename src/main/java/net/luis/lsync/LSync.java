@@ -11,7 +11,6 @@ import net.luis.lsync.ui.TrayItem;
 import net.luis.lsync.ui.UiUtils;
 import net.luis.lsync.utils.TimeStorage;
 import net.luis.lsync.utils.Utils;
-import net.luis.utils.util.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -64,17 +63,15 @@ public class LSync extends Application {
 		Thread.currentThread().setName("Ui Thread");
 		this.disablePrimaryStage(primaryStage);
 		Stage stage = this.setupMainStage(primaryStage);
-		this.tray.addMouseListener((e) -> {
-			Platform.runLater(() -> {
-				if (stage.isShowing()) {
-					stage.hide();
-				} else if (this.focusStorage.get(true)) {
-					stage.show();
-					stage.requestFocus();
-					this.positionStage(stage);
-				}
-			});
-		});
+		this.tray.addMouseListener((e) -> Platform.runLater(() -> {
+			if (stage.isShowing()) {
+				stage.hide();
+			} else if (this.focusStorage.get(true)) {
+				stage.show();
+				stage.requestFocus();
+				this.positionStage(stage);
+			}
+		}));
 		UiUtils.addTray(this.tray);
 		Scene scene = new Scene(new StackPane(), 400, 550);
 		stage.setScene(scene);
